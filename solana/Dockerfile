@@ -24,11 +24,12 @@ RUN cd solana-${SOLANA_VERSION}; ./scripts/cargo-install-all.sh .
 # --- Runtime ---
 FROM ubuntu:20.04
 
+ARG TARGETARCH
+ARG SOLANA_VERSION
+
 # TODO: do not run as root
 
 WORKDIR /root
-
-ARG SOLANA_VERSION
 
 # The Solana binaries are quite big (~750MB), consider including only the necessary ones
 COPY --from=builder /usr/src/solana-${SOLANA_VERSION}/bin /usr/src/solana-${SOLANA_VERSION}/bin
@@ -37,7 +38,7 @@ ENV PATH="/usr/src/solana-${SOLANA_VERSION}/bin:$PATH"
 
 # Use Tini as entrypoint
 ARG TINI_VERSION="0.19.0"
-ADD https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini /tini
+ADD https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini-${TARGETARCH:-amd64} /tini
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
 
