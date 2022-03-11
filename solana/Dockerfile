@@ -32,9 +32,7 @@ ARG SOLANA_VERSION
 WORKDIR /root
 
 # The Solana binaries are quite big (~750MB), consider including only the necessary ones
-COPY --from=builder /usr/src/solana-${SOLANA_VERSION}/bin /usr/src/solana-${SOLANA_VERSION}/bin
-
-ENV PATH="/usr/src/solana-${SOLANA_VERSION}/bin:$PATH"
+COPY --from=builder /usr/src/solana-${SOLANA_VERSION}/bin /usr/bin
 
 # Use Tini as entrypoint
 ARG TINI_VERSION="0.19.0"
